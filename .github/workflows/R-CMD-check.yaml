@@ -37,6 +37,7 @@ jobs:
         with:
           extra-packages: any::rcmdcheck, R4SUB/r4subcore
           needs: check
+          install-pandoc: 'false'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
