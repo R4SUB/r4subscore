@@ -20,8 +20,6 @@ Imports:
     tibble
 Suggests:
     testthat (>= 3.0.0)
-Remotes:
-    R4SUB/r4subcore
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
