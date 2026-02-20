@@ -1,12 +1,15 @@
 Package: r4subscore
-Title: Submission Confidence Index Engine for Clinical Submission Readiness
+Title: Submission Confidence Index Engine
 Version: 0.1.0
 Authors@R:
-    person("Pawan Rama", "Mali", , "prm@outlook.in", role = c("aut", "cre"))
-Description: Converts standardized R4SUB evidence into indicator scores, pillar
-    scores, and a Submission Confidence Index (SCI). Provides sensitivity
-    analysis, explainability tables, and decision band classification to answer
-    the question: are we ready for regulatory submission?
+    person("Pawan Rama", "Mali", email = "prm@outlook.in", role = c("aut", "cre"))
+Author: Pawan Rama Mali [aut, cre]
+Maintainer: Pawan Rama Mali <prm@outlook.in>
+Description: Converts standardized R4SUB (R for Regulatory Submission) evidence
+    into indicator scores, pillar scores, and a Submission Confidence Index
+    (SCI). Provides sensitivity analysis, explainability tables, and decision
+    band classification to answer the question: are we ready for regulatory
+    submission.
 License: MIT + file LICENSE
 URL: https://github.com/R4SUB/r4subscore
 BugReports: https://github.com/R4SUB/r4subscore/issues
