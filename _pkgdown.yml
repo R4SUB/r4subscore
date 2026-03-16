@@ -34,6 +34,9 @@ reference:
     contents:
       - sci_explain
       - sci_sensitivity_analysis
+  - title: "Print Methods"
+    contents:
+      - print.sci_result
 
 footer:
   structure:
