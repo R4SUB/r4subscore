@@ -1,21 +1,23 @@
 # r4subscore
 
-**r4subscore** is the scoring and calibration engine of the R4SUB ecosystem.
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/R4SUB/r4subscore/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/R4SUB/r4subscore/actions/workflows/R-CMD-check.yaml)
+[![CRAN status](https://www.r-pkg.org/badges/version/r4subscore)](https://CRAN.R-project.org/package=r4subscore)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/r4subscore)](https://CRAN.R-project.org/package=r4subscore)
+[![r-universe](https://r4sub.r-universe.dev/badges/r4subscore)](https://r4sub.r-universe.dev/r4subscore)
+<!-- badges: end -->
 
-It converts standardized evidence (from `r4subcore` and companion packages like `r4subtrace`) into:
+**r4subscore** is the scoring and calibration engine of the R4SUB ecosystem. It converts standardized evidence (from `r4subcore` and companion packages) into a **Submission Confidence Index (SCI)** — a single 0–100 score with decision bands, explainability tables, and sensitivity analysis.
 
-- Indicator Scores (per-indicator 0--1)
-- Pillar Scores (per-domain 0--1)
-- Submission Confidence Index (SCI, 0--100)
-- Decision Bands (Ready / Minor Gaps / Conditional / High Risk)
-- Sensitivity Analysis (SCI stability under weight variations)
-- Explainability Tables (which indicators drive SCI up/down)
-
-It answers the executive question:
-
-> Are we ready for regulatory submission -- and how confident are we?
+> Are we ready for regulatory submission — and how confident are we?
 
 ## Installation
+
+```r
+install.packages("r4subscore")
+```
+
+Development version:
 
 ```r
 pak::pak(c("R4SUB/r4subcore", "R4SUB/r4subscore"))
@@ -27,41 +29,53 @@ pak::pak(c("R4SUB/r4subcore", "R4SUB/r4subscore"))
 library(r4subcore)
 library(r4subscore)
 
-# assume ev is a validated evidence table
 pillar_scores <- compute_pillar_scores(ev)
-sci <- compute_sci(pillar_scores)
+sci           <- compute_sci(pillar_scores)
 
-sci$SCI
-sci$band
+sci$SCI   # 0–100
+sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 ```
 
-## Core Functions
-
-| Function | Purpose |
-|---|---|
-| `sci_config_default()` | Pillar weights + decision bands config |
-| `classify_band()` | Classify an SCI value into a decision band |
-| `compute_indicator_scores()` | Severity-weighted indicator-level scores |
-| `compute_pillar_scores()` | Aggregate indicators into pillar scores |
-| `compute_sci()` | Compute SCI (0--100) + band classification |
-| `sci_sensitivity_analysis()` | SCI under alternative weight scenarios |
-| `sci_explain()` | Top loss contributors + pillar breakdown |
-
-## SCI Bands
+## SCI Decision Bands
 
 | SCI | Band | Interpretation |
-|-----|------|----------------|
-| 85--100 | `ready` | Ready for Submission |
-| 70--84  | `minor_gaps` | Minor Gaps to Address |
-| 50--69  | `conditional` | Conditional -- Address Key Issues |
-| 0--49   | `high_risk` | High Risk |
+|---|---|---|
+| 85–100 | `ready` | Ready for Submission |
+| 70–84 | `minor_gaps` | Minor Gaps to Address |
+| 50–69 | `conditional` | Conditional — Address Key Issues |
+| 0–49 | `high_risk` | High Risk |
 
 ## Scoring Logic
 
-1. Each evidence row gets a **weighted score**: `result_score * (1 - severity_weight)`
-2. Indicator scores = mean weighted score per indicator
-3. Pillar scores = mean indicator score per domain
-4. SCI = weighted sum of pillar scores x 100
+1. Each evidence row gets a **weighted score**: `result_score × (1 − severity_weight)`
+2. **Indicator scores** = mean weighted score per indicator
+3. **Pillar scores** = mean indicator score per domain (quality, trace, risk, usability)
+4. **SCI** = weighted sum of pillar scores × 100
+
+## Key Functions
+
+| Function | Purpose |
+|---|---|
+| `sci_config_default()` | Pillar weights and decision bands configuration |
+| `classify_band()` | Classify an SCI value into a decision band |
+| `compute_indicator_scores()` | Severity-weighted indicator-level scores |
+| `compute_pillar_scores()` | Aggregate indicators into pillar scores |
+| `compute_sci()` | Compute SCI (0–100) and band classification |
+| `sci_sensitivity_analysis()` | SCI under alternative weight scenarios |
+| `sci_explain()` | Top loss contributors and pillar breakdown |
+
+## Integration with r4subprofile
+
+```r
+library(r4subprofile)
+library(r4subscore)
+
+prof <- submission_profile("FDA", "NDA")
+cfg  <- profile_sci_config(prof)
+
+pillar_scores <- compute_pillar_scores(ev, config = cfg)
+sci           <- compute_sci(pillar_scores, config = cfg)
+```
 
 ## License
 
