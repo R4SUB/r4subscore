@@ -19,10 +19,6 @@ navbar:
 
 home:
   title: "r4subscore — Submission Confidence Index (SCI) Engine"
-  description: >
-    Computes the Submission Confidence Index (SCI), a 0-100 composite score
-    across quality, trace, risk, and usability pillars, with decision bands
-    and sensitivity analysis.
 
 reference:
   - title: "Configuration"
@@ -32,6 +28,8 @@ reference:
     contents:
       - compute_pillar_scores
       - compute_sci
+      - compute_indicator_scores
+      - classify_band
   - title: "Explainability"
     contents:
       - sci_explain
