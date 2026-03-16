@@ -1,0 +1,43 @@
+url: https://r4sub.github.io/r4subscore/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#2C6DB5"
+
+navbar:
+  bg: light
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github
+      href: https://github.com/R4SUB/r4subscore
+      aria-label: GitHub
+
+home:
+  title: "r4subscore — Submission Confidence Index (SCI) Engine"
+  description: >
+    Computes the Submission Confidence Index (SCI), a 0-100 composite score
+    across quality, trace, risk, and usability pillars, with decision bands
+    and sensitivity analysis.
+
+reference:
+  - title: "Configuration"
+    contents:
+      - sci_config_default
+  - title: "Scoring"
+    contents:
+      - compute_pillar_scores
+      - compute_sci
+  - title: "Explainability"
+    contents:
+      - sci_explain
+      - sci_sensitivity_analysis
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
