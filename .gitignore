@@ -1,0 +1,4 @@
+/..Rcheck
+/r4subscore.Rcheck
+*.tar.gz
+.claude/
