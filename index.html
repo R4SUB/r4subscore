@@ -55,86 +55,36 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="r4subscore">r4subscore<a class="anchor" aria-label="anchor" href="#r4subscore"></a>
 </h1></div>
-<p><strong>r4subscore</strong> is the scoring and calibration engine of the R4SUB ecosystem.</p>
-<p>It converts standardized evidence (from <code>r4subcore</code> and companion packages like <code>r4subtrace</code>) into:</p>
-<ul>
-<li>Indicator Scores (per-indicator 0–1)</li>
-<li>Pillar Scores (per-domain 0–1)</li>
-<li>Submission Confidence Index (SCI, 0–100)</li>
-<li>Decision Bands (Ready / Minor Gaps / Conditional / High Risk)</li>
-<li>Sensitivity Analysis (SCI stability under weight variations)</li>
-<li>Explainability Tables (which indicators drive SCI up/down)</li>
-</ul>
-<p>It answers the executive question:</p>
+<!-- badges: start -->
+
+<p><strong>r4subscore</strong> is the scoring and calibration engine of the R4SUB ecosystem. It converts standardized evidence (from <code>r4subcore</code> and companion packages) into a <strong>Submission Confidence Index (SCI)</strong> — a single 0–100 score with decision bands, explainability tables, and sensitivity analysis.</p>
 <blockquote>
-<p>Are we ready for regulatory submission – and how confident are we?</p>
+<p>Are we ready for regulatory submission — and how confident are we?</p>
 </blockquote>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"r4subscore"</span><span class="op">)</span></span></code></pre></div>
+<p>Development version:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"R4SUB/r4subcore"</span>, <span class="st">"R4SUB/r4subscore"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R4SUB/r4subcore" class="external-link">r4subcore</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r4sub.github.io/r4subscore/">r4subscore</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># assume ev is a validated evidence table</span></span>
 <span><span class="va">pillar_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_pillar_scores.html">compute_pillar_scores</a></span><span class="op">(</span><span class="va">ev</span><span class="op">)</span></span>
-<span><span class="va">sci</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_sci.html">compute_sci</a></span><span class="op">(</span><span class="va">pillar_scores</span><span class="op">)</span></span>
+<span><span class="va">sci</span>           <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_sci.html">compute_sci</a></span><span class="op">(</span><span class="va">pillar_scores</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sci</span><span class="op">$</span><span class="va">SCI</span></span>
-<span><span class="va">sci</span><span class="op">$</span><span class="va">band</span></span></code></pre></div>
+<span><span class="va">sci</span><span class="op">$</span><span class="va">SCI</span>   <span class="co"># 0–100</span></span>
+<span><span class="va">sci</span><span class="op">$</span><span class="va">band</span>  <span class="co"># "ready", "minor_gaps", "conditional", or "high_risk"</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="core-functions">Core Functions<a class="anchor" aria-label="anchor" href="#core-functions"></a>
-</h2>
-<table class="table">
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr class="header">
-<th>Function</th>
-<th>Purpose</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code><a href="reference/sci_config_default.html">sci_config_default()</a></code></td>
-<td>Pillar weights + decision bands config</td>
-</tr>
-<tr class="even">
-<td><code><a href="reference/classify_band.html">classify_band()</a></code></td>
-<td>Classify an SCI value into a decision band</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/compute_indicator_scores.html">compute_indicator_scores()</a></code></td>
-<td>Severity-weighted indicator-level scores</td>
-</tr>
-<tr class="even">
-<td><code><a href="reference/compute_pillar_scores.html">compute_pillar_scores()</a></code></td>
-<td>Aggregate indicators into pillar scores</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/compute_sci.html">compute_sci()</a></code></td>
-<td>Compute SCI (0–100) + band classification</td>
-</tr>
-<tr class="even">
-<td><code><a href="reference/sci_sensitivity_analysis.html">sci_sensitivity_analysis()</a></code></td>
-<td>SCI under alternative weight scenarios</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/sci_explain.html">sci_explain()</a></code></td>
-<td>Top loss contributors + pillar breakdown</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level2">
-<h2 id="sci-bands">SCI Bands<a class="anchor" aria-label="anchor" href="#sci-bands"></a>
+<h2 id="sci-decision-bands">SCI Decision Bands<a class="anchor" aria-label="anchor" href="#sci-decision-bands"></a>
 </h2>
 <table class="table">
 <thead><tr class="header">
@@ -156,7 +106,7 @@
 <tr class="odd">
 <td>50–69</td>
 <td><code>conditional</code></td>
-<td>Conditional – Address Key Issues</td>
+<td>Conditional — Address Key Issues</td>
 </tr>
 <tr class="even">
 <td>0–49</td>
@@ -170,12 +120,72 @@
 <h2 id="scoring-logic">Scoring Logic<a class="anchor" aria-label="anchor" href="#scoring-logic"></a>
 </h2>
 <ol style="list-style-type: decimal">
-<li>Each evidence row gets a <strong>weighted score</strong>: <code>result_score * (1 - severity_weight)</code>
+<li>Each evidence row gets a <strong>weighted score</strong>: <code>result_score × (1 − severity_weight)</code>
 </li>
-<li>Indicator scores = mean weighted score per indicator</li>
-<li>Pillar scores = mean indicator score per domain</li>
-<li>SCI = weighted sum of pillar scores x 100</li>
+<li>
+<strong>Indicator scores</strong> = mean weighted score per indicator</li>
+<li>
+<strong>Pillar scores</strong> = mean indicator score per domain (quality, trace, risk, usability)</li>
+<li>
+<strong>SCI</strong> = weighted sum of pillar scores × 100</li>
 </ol>
+</div>
+<div class="section level2">
+<h2 id="key-functions">Key Functions<a class="anchor" aria-label="anchor" href="#key-functions"></a>
+</h2>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="reference/sci_config_default.html">sci_config_default()</a></code></td>
+<td>Pillar weights and decision bands configuration</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/classify_band.html">classify_band()</a></code></td>
+<td>Classify an SCI value into a decision band</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/compute_indicator_scores.html">compute_indicator_scores()</a></code></td>
+<td>Severity-weighted indicator-level scores</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/compute_pillar_scores.html">compute_pillar_scores()</a></code></td>
+<td>Aggregate indicators into pillar scores</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/compute_sci.html">compute_sci()</a></code></td>
+<td>Compute SCI (0–100) and band classification</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/sci_sensitivity_analysis.html">sci_sensitivity_analysis()</a></code></td>
+<td>SCI under alternative weight scenarios</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/sci_explain.html">sci_explain()</a></code></td>
+<td>Top loss contributors and pillar breakdown</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="integration-with-r4subprofile">Integration with r4subprofile<a class="anchor" aria-label="anchor" href="#integration-with-r4subprofile"></a>
+</h2>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/R4SUB/r4subprofile" class="external-link">r4subprofile</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r4sub.github.io/r4subscore/">r4subscore</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prof</span> <span class="op">&lt;-</span> <span class="fu">submission_profile</span><span class="op">(</span><span class="st">"FDA"</span>, <span class="st">"NDA"</span><span class="op">)</span></span>
+<span><span class="va">cfg</span>  <span class="op">&lt;-</span> <span class="fu">profile_sci_config</span><span class="op">(</span><span class="va">prof</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pillar_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_pillar_scores.html">compute_pillar_scores</a></span><span class="op">(</span><span class="va">ev</span>, config <span class="op">=</span> <span class="va">cfg</span><span class="op">)</span></span>
+<span><span class="va">sci</span>           <span class="op">&lt;-</span> <span class="fu"><a href="reference/compute_sci.html">compute_sci</a></span><span class="op">(</span><span class="va">pillar_scores</span>, config <span class="op">=</span> <span class="va">cfg</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
@@ -216,7 +226,15 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/R4SUB/r4subscore/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/R4SUB/r4subscore/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://CRAN.R-project.org/package=r4subscore" class="external-link"><img src="https://www.r-pkg.org/badges/version/r4subscore" alt="CRAN status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=r4subscore" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/r4subscore" alt="CRAN downloads"></a></li>
+<li><a href="https://r4sub.r-universe.dev/r4subscore" class="external-link"><img src="https://r4sub.r-universe.dev/badges/r4subscore" alt="r-universe"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
