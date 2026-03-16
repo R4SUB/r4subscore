@@ -11,7 +11,7 @@ Description: Converts standardized R4SUB (R for Regulatory Submission) evidence
     band classification to answer the question: are we ready for regulatory
     submission.
 License: MIT + file LICENSE
-URL: https://github.com/R4SUB/r4subscore
+URL: https://r4sub.github.io/r4subscore/, https://github.com/R4SUB/r4subscore
 BugReports: https://github.com/R4SUB/r4subscore/issues
 Depends:
     R (>= 4.2)
