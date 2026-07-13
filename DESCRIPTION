@@ -5,7 +5,7 @@ Authors@R:
     person("Pawan Rama", "Mali", email = "prm@outlook.in",
            role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-7864-5819"))
-Description: Converts standardized R4SUB (R for Regulatory Submission) evidence
+Description: Converts standardized R4SUB (Ready for Submission) evidence
     into indicator scores, pillar scores, and a Submission Confidence Index
     (SCI). Provides sensitivity analysis, explainability tables, and decision
     band classification to answer the question: are we ready for regulatory
