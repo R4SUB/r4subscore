@@ -11,18 +11,21 @@ sensitivity analysis.
 ## Installation
 
 ``` r
+
 install.packages("r4subscore")
 ```
 
 Development version:
 
 ``` r
+
 pak::pak(c("R4SUB/r4subcore", "R4SUB/r4subscore"))
 ```
 
 ## Quick Start
 
 ``` r
+
 library(r4subcore)
 library(r4subscore)
 
@@ -53,19 +56,20 @@ sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 
 ## Key Functions
 
-| Function                                                                                                 | Purpose                                         |
-|----------------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| [`sci_config_default()`](https://r4sub.github.io/r4subscore/reference/sci_config_default.md)             | Pillar weights and decision bands configuration |
-| [`classify_band()`](https://r4sub.github.io/r4subscore/reference/classify_band.md)                       | Classify an SCI value into a decision band      |
-| [`compute_indicator_scores()`](https://r4sub.github.io/r4subscore/reference/compute_indicator_scores.md) | Severity-weighted indicator-level scores        |
-| [`compute_pillar_scores()`](https://r4sub.github.io/r4subscore/reference/compute_pillar_scores.md)       | Aggregate indicators into pillar scores         |
-| [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md)                           | Compute SCI (0–100) and band classification     |
-| [`sci_sensitivity_analysis()`](https://r4sub.github.io/r4subscore/reference/sci_sensitivity_analysis.md) | SCI under alternative weight scenarios          |
-| [`sci_explain()`](https://r4sub.github.io/r4subscore/reference/sci_explain.md)                           | Top loss contributors and pillar breakdown      |
+| Function | Purpose |
+|----|----|
+| [`sci_config_default()`](https://r4sub.github.io/r4subscore/reference/sci_config_default.md) | Pillar weights and decision bands configuration |
+| [`classify_band()`](https://r4sub.github.io/r4subscore/reference/classify_band.md) | Classify an SCI value into a decision band |
+| [`compute_indicator_scores()`](https://r4sub.github.io/r4subscore/reference/compute_indicator_scores.md) | Severity-weighted indicator-level scores |
+| [`compute_pillar_scores()`](https://r4sub.github.io/r4subscore/reference/compute_pillar_scores.md) | Aggregate indicators into pillar scores |
+| [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md) | Compute SCI (0–100) and band classification |
+| [`sci_sensitivity_analysis()`](https://r4sub.github.io/r4subscore/reference/sci_sensitivity_analysis.md) | SCI under alternative weight scenarios |
+| [`sci_explain()`](https://r4sub.github.io/r4subscore/reference/sci_explain.md) | Top loss contributors and pillar breakdown |
 
 ## Integration with r4subprofile
 
 ``` r
+
 library(r4subprofile)
 library(r4subscore)
 

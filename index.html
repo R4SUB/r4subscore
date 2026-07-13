@@ -7,12 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>r4subscore — Submission Confidence Index (SCI) Engine • r4subscore</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="r4subscore — Submission Confidence Index (SCI) Engine">
-<meta name="description" content="Converts standardized R4SUB (R for Regulatory Submission) evidence into indicator scores, pillar scores, and a Submission Confidence Index (SCI). Provides sensitivity analysis, explainability tables, and decision band classification to answer the question: are we ready for regulatory submission.">
-<meta property="og:description" content="Converts standardized R4SUB (R for Regulatory Submission) evidence into indicator scores, pillar scores, and a Submission Confidence Index (SCI). Provides sensitivity analysis, explainability tables, and decision band classification to answer the question: are we ready for regulatory submission.">
+<meta name="description" content="Converts standardized R4SUB (Ready for Submission) evidence into indicator scores, pillar scores, and a Submission Confidence Index (SCI). Provides sensitivity analysis, explainability tables, and decision band classification to answer the question: are we ready for regulatory submission.">
+<meta property="og:description" content="Converts standardized R4SUB (Ready for Submission) evidence into indicator scores, pillar scores, and a Submission Confidence Index (SCI). Provides sensitivity analysis, explainability tables, and decision band classification to answer the question: are we ready for regulatory submission.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -87,28 +87,28 @@
 <h2 id="sci-decision-bands">SCI Decision Bands<a class="anchor" aria-label="anchor" href="#sci-decision-bands"></a>
 </h2>
 <table class="table">
-<thead><tr class="header">
+<thead><tr>
 <th>SCI</th>
 <th>Band</th>
 <th>Interpretation</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td>85–100</td>
 <td><code>ready</code></td>
 <td>Ready for Submission</td>
 </tr>
-<tr class="even">
+<tr>
 <td>70–84</td>
 <td><code>minor_gaps</code></td>
 <td>Minor Gaps to Address</td>
 </tr>
-<tr class="odd">
+<tr>
 <td>50–69</td>
 <td><code>conditional</code></td>
 <td>Conditional — Address Key Issues</td>
 </tr>
-<tr class="even">
+<tr>
 <td>0–49</td>
 <td><code>high_risk</code></td>
 <td>High Risk</td>
@@ -138,36 +138,36 @@
 <col width="50%">
 <col width="50%">
 </colgroup>
-<thead><tr class="header">
+<thead><tr>
 <th>Function</th>
 <th>Purpose</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/sci_config_default.html">sci_config_default()</a></code></td>
 <td>Pillar weights and decision bands configuration</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/classify_band.html">classify_band()</a></code></td>
 <td>Classify an SCI value into a decision band</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/compute_indicator_scores.html">compute_indicator_scores()</a></code></td>
 <td>Severity-weighted indicator-level scores</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/compute_pillar_scores.html">compute_pillar_scores()</a></code></td>
 <td>Aggregate indicators into pillar scores</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/compute_sci.html">compute_sci()</a></code></td>
 <td>Compute SCI (0–100) and band classification</td>
 </tr>
-<tr class="even">
+<tr>
 <td><code><a href="reference/sci_sensitivity_analysis.html">sci_sensitivity_analysis()</a></code></td>
 <td>SCI under alternative weight scenarios</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><code><a href="reference/sci_explain.html">sci_explain()</a></code></td>
 <td>Top loss contributors and pillar breakdown</td>
 </tr>
@@ -245,7 +245,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -5,6 +5,7 @@ The `r4subscore` package computes the **Submission Confidence Index
 four pillars: quality, trace, risk, and usability.
 
 ``` r
+
 library(r4subscore)
 ```
 
@@ -14,6 +15,7 @@ library(r4subscore)
 returns the pillar weights and decision-band thresholds:
 
 ``` r
+
 cfg <- sci_config_default()
 cfg$pillar_weights
 #>   quality     trace      risk usability 
@@ -47,6 +49,7 @@ The default weights are: quality 35%, trace 25%, risk 25%, usability
 ## Building example evidence
 
 ``` r
+
 ev <- data.frame(
   run_id           = "run-001",
   study_id         = "STUDY01",
@@ -77,6 +80,7 @@ ev <- data.frame(
 aggregates the mean metric value per domain:
 
 ``` r
+
 ps <- compute_pillar_scores(ev)
 ps
 #> # A tibble: 4 × 4
@@ -91,6 +95,7 @@ ps
 ## Computing the SCI
 
 ``` r
+
 result <- compute_sci(ps)
 result$SCI
 #> [1] 80
@@ -112,6 +117,7 @@ returns a breakdown showing each pillar’s contribution to the final SCI
 and any score loss:
 
 ``` r
+
 expl <- sci_explain(ev)
 expl$pillar_contributions
 #> # A tibble: 4 × 6
@@ -130,6 +136,7 @@ evaluates the SCI across a grid of alternative pillar weights, useful
 for understanding how robust the score is to weighting choices:
 
 ``` r
+
 grid <- data.frame(
   quality    = c(0.35, 0.50, 0.25),
   trace      = c(0.25, 0.20, 0.30),
@@ -152,6 +159,7 @@ sa
 Pass a custom config to favour particular pillars:
 
 ``` r
+
 cfg_custom <- sci_config_default(
   pillar_weights = c(quality = 0.50, trace = 0.20,
                      risk = 0.20, usability = 0.10)
