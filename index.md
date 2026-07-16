@@ -2,11 +2,11 @@
 
 **r4subscore** is the scoring and calibration engine of the R4SUB
 ecosystem. It converts standardized evidence (from `r4subcore` and
-companion packages) into a **Submission Confidence Index (SCI)** — a
-single 0–100 score with decision bands, explainability tables, and
+companion packages) into a **Submission Confidence Index (SCI)**, a
+single 0-100 score with decision bands, explainability tables, and
 sensitivity analysis.
 
-> Are we ready for regulatory submission — and how confident are we?
+> Are we ready for regulatory submission, and how confident are we?
 
 ## Installation
 
@@ -38,12 +38,12 @@ sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 
 ## SCI Decision Bands
 
-| SCI    | Band          | Interpretation                   |
-|--------|---------------|----------------------------------|
-| 85–100 | `ready`       | Ready for Submission             |
-| 70–84  | `minor_gaps`  | Minor Gaps to Address            |
-| 50–69  | `conditional` | Conditional — Address Key Issues |
-| 0–49   | `high_risk`   | High Risk                        |
+| SCI    | Band          | Interpretation                  |
+|--------|---------------|---------------------------------|
+| 85–100 | `ready`       | Ready for Submission            |
+| 70–84  | `minor_gaps`  | Minor Gaps to Address           |
+| 50–69  | `conditional` | Conditional, address key issues |
+| 0–49   | `high_risk`   | High Risk                       |
 
 ## Scoring Logic
 
