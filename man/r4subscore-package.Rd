@@ -4,20 +4,21 @@
 \name{r4subscore-package}
 \alias{r4subscore}
 \alias{r4subscore-package}
-\title{r4subscore: Submission Confidence Index Engine for Clinical Submission Readiness}
+\title{r4subscore: Submission Confidence Index Engine}
 \description{
-Converts standardized R4SUB evidence into indicator scores, pillar scores, and a Submission Confidence Index (SCI). Provides sensitivity analysis, explainability tables, and decision band classification to answer the question: are we ready for regulatory submission?
+Converts standardized R4SUB (Ready for Submission) evidence into indicator scores, pillar scores, and a Submission Confidence Index (SCI). Provides sensitivity analysis, explainability tables, and decision band classification to answer the question: are we ready for regulatory submission.
 }
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://r4sub.github.io/r4subscore/}
   \item \url{https://github.com/R4SUB/r4subscore}
   \item Report bugs at \url{https://github.com/R4SUB/r4subscore/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Pawan Rama Mali \email{prm@outlook.in}
+\strong{Maintainer}: Pawan Rama Mali \email{prm@outlook.in} (\href{https://orcid.org/0000-0001-7864-5819}{ORCID}) [copyright holder]
 
 }
 \keyword{internal}
