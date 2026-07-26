@@ -1,5 +1,12 @@
 # r4subscore (development version)
 
+- Add validation helpers: `sci_degradation_curve()` records how the SCI responds
+  as passing checks are turned into failures, `sci_monotone_check()` confirms a
+  curve never rises, and `conformance_findings()` produces an independent
+  severity-weighted finding count for concurrent-validity checks.
+- Add vignette: "Validating the Submission Confidence Index", covering construct,
+  discriminant, concurrent, and robustness validity, and documenting a
+  calibration finding about how severity discounts passing credit.
 - Clarified the package DESCRIPTION: "R4SUB" expands to "Ready for Submission"
   (previously "R for Regulatory Submission", inconsistent with the rest of the
   ecosystem).
