@@ -1,5 +1,8 @@
 # r4subscore (development version)
 
+- Add vignette: "Case study: scoring a CDISC pilot for submission readiness", a
+  worked walkthrough of the SCI on the example pharma evidence from `r4subdata`.
+
 - Add validation helpers: `sci_degradation_curve()` records how the SCI responds
   as passing checks are turned into failures, `sci_monotone_check()` confirms a
   curve never rises, and `conformance_findings()` produces an independent
