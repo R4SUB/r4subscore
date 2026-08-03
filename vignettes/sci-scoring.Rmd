@@ -127,3 +127,28 @@ sci2  <- compute_sci(ps2, config = cfg_custom)
 sci2$SCI
 sci2$band
 ```
+
+## Confidence intervals
+
+A single SCI number hides how much of the score is measurement noise. An SCI of
+72 could be a solid `conditional` result or a borderline `minor_gaps` one that
+happened to round down. `sci_confidence_interval()` resamples the evidence and
+reports where the SCI is likely to sit:
+
+```{r ci}
+ci <- sci_confidence_interval(ev, n_boot = 500, seed = 1)
+ci
+```
+
+`format_sci_ci()` gives the compact form for a report or a slide:
+
+```{r ci-format}
+format_sci_ci(ci)
+```
+
+Read the interval, not just the point estimate. When the interval sits entirely
+inside one decision band, the band is a firm call. When it straddles two bands,
+as flagged in the printout, the readiness decision is sensitive to which checks
+were run, and the honest answer is that more evidence is needed before the band
+can be trusted. The default scheme resamples indicator scores within each
+pillar; pass `by = "evidence"` to resample the raw evidence rows instead.
