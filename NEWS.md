@@ -1,5 +1,13 @@
 # r4subscore (development version)
 
+- Add a non-compensatory gate to the SCI. An open critical finding (severity
+  `critical`, result `fail`) now caps the reported band at `conditional` by
+  default, so a strong score in one pillar cannot wash out a critical failure in
+  another. The numeric SCI is left unchanged; only the band is capped, and
+  `compute_sci()` records `n_critical`, `gated`, and a `gate_reason`. The gate is
+  configurable through `sci_config_default(gate = ...)` and applies automatically
+  through the standard pipeline. The default is a starting point sponsors should
+  calibrate, not validated truth.
 - Add `indicator_contributions()`, which breaks a pillar score down into
   per-indicator contributions, ranks indicators by how many SCI points a fix
   could recover, and attaches a short remediation hint to each one.

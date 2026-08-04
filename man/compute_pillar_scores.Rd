@@ -13,7 +13,9 @@ compute_pillar_scores(evidence, config = sci_config_default())
 }
 \value{
 A tibble with columns: \code{pillar}, \code{pillar_score}, \code{n_indicators},
-\code{weight}.
+\code{weight}. The number of open critical findings (severity \code{critical},
+result \code{fail}) is attached as an \code{n_critical} attribute, which
+\code{\link[=compute_sci]{compute_sci()}} reads to apply the non-compensatory gate.
 }
 \description{
 Aggregates indicator scores into pillar-level scores (one per domain).
