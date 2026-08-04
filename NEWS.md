@@ -1,3 +1,14 @@
+# r4subscore (development version)
+
+- Add `sci_snapshot()`, `sci_diff()`, and `sci_snapshot_history()` for tracking
+  readiness over time. A snapshot records the SCI, band, and pillar and indicator
+  scores for one run under a label; `sci_diff()` reports what moved between two
+  runs (overall SCI change, band change, per-pillar deltas, and which indicators
+  improved, regressed, were added, or removed); and `sci_snapshot_history()`
+  binds a series into a tidy table for a trend plot. This turns the SCI from a
+  single-run report card into a way to answer whether a submission is on
+  trajectory to file.
+
 # r4subscore 0.2.0
 
 - Add a non-compensatory gate to the SCI. An open critical finding (severity
