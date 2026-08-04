@@ -152,3 +152,31 @@ as flagged in the printout, the readiness decision is sensitive to which checks
 were run, and the honest answer is that more evidence is needed before the band
 can be trusted. The default scheme resamples indicator scores within each
 pillar; pass `by = "evidence"` to resample the raw evidence rows instead.
+
+## Critical findings cap the band
+
+The SCI is a weighted average, so a strong pillar can lift the score even when
+another pillar hides a serious problem. That is the wrong behavior for a
+readiness call: a single critical failure should not be averaged away. The
+scoring config carries a non-compensatory gate that caps the band when an open
+critical finding is present. The pipeline applies it automatically, counting
+critical findings (severity `critical`, result `fail`) from the evidence, but it
+is easiest to see with the count passed directly:
+
+```{r gate}
+strong <- data.frame(
+  pillar       = c("quality", "trace", "risk", "usability"),
+  pillar_score = c(0.95, 0.92, 0.90, 0.93),
+  weight       = c(0.35, 0.25, 0.25, 0.15)
+)
+
+compute_sci(strong, n_critical = 0)$band
+
+capped <- compute_sci(strong, n_critical = 1)
+capped$band
+capped$gate_reason
+```
+
+The numeric SCI is identical in both cases; only the band moves, so the score
+still tells you how much work remains. A sponsor that wants a different policy
+can move the cap or turn the gate off through `sci_config_default(gate = ...)`.

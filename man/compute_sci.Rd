@@ -4,21 +4,29 @@
 \alias{compute_sci}
 \title{Compute Submission Confidence Index (SCI)}
 \usage{
-compute_sci(pillar_scores, config = sci_config_default())
+compute_sci(pillar_scores, config = sci_config_default(), n_critical = NULL)
 }
 \arguments{
 \item{pillar_scores}{A tibble from \code{\link[=compute_pillar_scores]{compute_pillar_scores()}} with columns
 \code{pillar}, \code{pillar_score}, \code{weight}.}
 
 \item{config}{An \code{sci_config} from \code{\link[=sci_config_default]{sci_config_default()}}.}
+
+\item{n_critical}{Number of open critical findings. When \code{NULL} (the
+default), it is read from the \code{n_critical} attribute that
+\code{\link[=compute_pillar_scores]{compute_pillar_scores()}} attaches, so the gate applies automatically
+through the standard pipeline. Pass a value to override.}
 }
 \value{
 A list of class \code{"sci_result"} with:
 \itemize{
 \item \code{SCI}: numeric 0--100
-\item \code{band}: character band classification
+\item \code{band}: character band classification, after any gate cap
 \item \code{pillar_scores}: the input pillar scores tibble
 \item \code{weights_used}: named numeric vector of effective weights
+\item \code{n_critical}: number of open critical findings considered
+\item \code{gated}: \code{TRUE} when a critical finding capped the band
+\item \code{gate_reason}: a short explanation when \code{gated}, otherwise \code{NA}
 }
 }
 \description{
@@ -32,6 +40,12 @@ The SCI is computed as:
 
 Pillars with \code{NA} scores are excluded from both the numerator and the
 weight normalization denominator.
+
+The score is a weighted average, which on its own lets a strong pillar offset
+a weak one. The gate in \code{config$gate} adds a non-compensatory rule on top: an
+open critical finding caps the reported band (by default at \code{conditional}), so
+a critical failure cannot be washed out by good scores elsewhere. The numeric
+SCI is left untouched; only the band is capped, and the reason is recorded.
 }
 \examples{
 \dontrun{
