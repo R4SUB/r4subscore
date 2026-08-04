@@ -1,4 +1,4 @@
-# r4subscore (development version)
+# r4subscore 0.2.0
 
 - Add a non-compensatory gate to the SCI. An open critical finding (severity
   `critical`, result `fail`) now caps the reported band at `conditional` by
