@@ -1,5 +1,10 @@
 # r4subscore (development version)
 
+- Add `indicator_contributions()`, which breaks a pillar score down into
+  per-indicator contributions, ranks indicators by how many SCI points a fix
+  could recover, and attaches a short remediation hint to each one.
+- Add `sci_what_if()`, which recomputes the pillar score and the SCI exactly as
+  if one indicator had a different score, for planning remediation.
 - Add validation helpers: `sci_degradation_curve()` records how the SCI responds
   as passing checks are turned into failures, `sci_monotone_check()` confirms a
   curve never rises, and `conformance_findings()` produces an independent
