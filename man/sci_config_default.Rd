@@ -7,7 +7,8 @@
 sci_config_default(
   pillar_weights = c(quality = 0.35, trace = 0.25, risk = 0.25, usability = 0.15),
   bands = list(ready = c(85, 100), minor_gaps = c(70, 84), conditional = c(50, 69),
-    high_risk = c(0, 49))
+    high_risk = c(0, 49)),
+  gate = list(critical_caps_band = TRUE, critical_cap = "conditional")
 )
 }
 \arguments{
@@ -17,10 +18,17 @@ Must sum to 1. Names must be a subset of
 
 \item{bands}{Named list of numeric length-2 vectors defining SCI band
 boundaries \code{c(lower, upper)}. Evaluated in order; first match wins.}
+
+\item{gate}{Named list controlling the non-compensatory gate. With
+\code{critical_caps_band = TRUE}, an open critical finding caps the reported band
+at \code{critical_cap} (a band name) no matter how high the weighted score is, so
+a strong score in one pillar cannot wash out a critical failure in another.
+Set \code{critical_caps_band = FALSE} to disable. This default is a starting
+point that sponsors should calibrate, not validated truth.}
 }
 \value{
 A list of class \code{"sci_config"} with elements:
-\code{pillar_weights}, \code{bands}.
+\code{pillar_weights}, \code{bands}, \code{gate}.
 }
 \description{
 Returns a configuration list with default pillar weights, decision bands,
