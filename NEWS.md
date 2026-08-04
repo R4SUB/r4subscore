@@ -1,5 +1,10 @@
 # r4subscore (development version)
 
+- Add `indicator_contributions()`, which breaks a pillar score down into
+  per-indicator contributions, ranks indicators by how many SCI points a fix
+  could recover, and attaches a short remediation hint to each one.
+- Add `sci_what_if()`, which recomputes the pillar score and the SCI exactly as
+  if one indicator had a different score, for planning remediation.
 - Add `sci_confidence_interval()`, a bootstrap confidence interval for the SCI
   so a readiness decision can account for measurement noise, with a
   `format_sci_ci()` helper for the compact `SCI = 82.0 [76.0, 88.0]` form and a
