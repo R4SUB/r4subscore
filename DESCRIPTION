@@ -23,6 +23,7 @@ Imports:
     tibble
 Suggests:
     knitr,
+    r4subdata,
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr

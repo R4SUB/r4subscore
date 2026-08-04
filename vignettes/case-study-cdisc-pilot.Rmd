@@ -1,0 +1,107 @@
+---
+title: "Case study: scoring a CDISC pilot for submission readiness"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Case study: scoring a CDISC pilot for submission readiness}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 7)
+```
+
+You have run Pinnacle 21, checked your Define-XML, and looked over the datasets.
+The output is a few hundred findings spread across a dozen tools. The question
+the study team actually asks is simpler than any single report answers: are we
+ready to file?
+
+This is what the Submission Confidence Index (SCI) is for. It takes a table of
+evidence and returns one number between 0 and 100, plus a decision band, plus a
+breakdown of where the number comes from. Here we walk a realistic CDISC pilot
+study through it, using the example evidence that ships with `r4subdata`.
+
+```{r libs, message = FALSE}
+library(r4subscore)
+library(r4subdata)
+```
+
+## The evidence
+
+`evidence_pharma` is a validation run for a CDISC pilot study: 250 findings from
+tools like Pinnacle 21, spread across the four readiness pillars.
+
+```{r evidence}
+ev <- evidence_pharma
+nrow(ev)
+table(ev$indicator_domain, ev$result)
+```
+
+Each row is one check against one asset, carrying a severity and a result. That
+is the whole contract. Any tool that can write this shape feeds the score.
+
+## The score
+
+Three calls take the evidence to a number: indicators, pillars, then the
+composite index.
+
+```{r score}
+ind <- compute_indicator_scores(ev)
+ps  <- compute_pillar_scores(ev)
+sci <- compute_sci(ps)
+
+sci
+```
+
+The pillar scores show where the study stands on each front before they are
+weighted together.
+
+```{r pillars}
+ps
+```
+
+## Where the score comes from
+
+A single number is only useful if you can open it up. `sci_explain()` reports
+each pillar's contribution and, more usefully, ranks the indicators dragging the
+score down.
+
+```{r explain}
+expl <- sci_explain(ev)
+expl$pillar_contributions
+head(expl$indicator_contributions, 8)
+```
+
+The indicators at the top of that list are where remediation buys the most. A
+team can work the list from the top and watch the score move, rather than
+guessing which of 250 findings matter.
+
+## Is the score stable?
+
+The default weights (quality 0.35, trace 0.25, risk 0.25, usability 0.15) are a
+choice, not a law. Before anyone leans on the number, it is worth asking how much
+it depends on that choice. `sci_sensitivity_analysis()` recomputes the SCI across
+a grid of alternative weightings.
+
+```{r sensitivity}
+grid <- data.frame(
+  quality   = c(0.35, 0.50, 0.25, 0.40),
+  trace     = c(0.25, 0.20, 0.30, 0.20),
+  risk      = c(0.25, 0.20, 0.25, 0.30),
+  usability = c(0.15, 0.10, 0.20, 0.10)
+)
+
+sci_sensitivity_analysis(ev, weight_grid = grid)
+```
+
+If the band holds across that grid, the readiness call is robust to the
+weighting. If it flips between bands, the honest reading is that the decision
+hangs on a judgment about which pillar matters most, and that judgment should be
+made explicitly rather than buried in a default.
+
+## What this answers
+
+The SCI does not replace the underlying checks. It sits on top of them and
+answers the one question the checks cannot: taken together, how ready is this
+submission, and what would move the needle first. For a study team deciding
+whether to file, that is the number that matters.
