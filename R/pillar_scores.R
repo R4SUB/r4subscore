@@ -7,7 +7,9 @@
 #' @param config An `sci_config` from [sci_config_default()].
 #'
 #' @return A tibble with columns: `pillar`, `pillar_score`, `n_indicators`,
-#'   `weight`.
+#'   `weight`. The number of open critical findings (severity `critical`,
+#'   result `fail`) is attached as an `n_critical` attribute, which
+#'   [compute_sci()] reads to apply the non-compensatory gate.
 #'
 #' @examples
 #' \dontrun{
@@ -40,5 +42,13 @@ compute_pillar_scores <- function(evidence, config = sci_config_default()) {
     )
   })
 
-  dplyr::bind_rows(rows)
+  ps <- dplyr::bind_rows(rows)
+
+  # Carry the open critical-finding count so compute_sci() can gate the band.
+  n_critical <- sum(
+    evidence$severity == "critical" & evidence$result == "fail",
+    na.rm = TRUE
+  )
+  attr(ps, "n_critical") <- as.integer(n_critical)
+  ps
 }

@@ -1,9 +1,10 @@
 test_that("sci_config_default returns expected structure", {
   cfg <- sci_config_default()
   expect_s3_class(cfg, "sci_config")
-  expect_named(cfg, c("pillar_weights", "bands"))
+  expect_named(cfg, c("pillar_weights", "bands", "gate"))
   expect_equal(sum(cfg$pillar_weights), 1.0)
   expect_length(cfg$bands, 4)
+  expect_true(cfg$gate$critical_caps_band)
 })
 
 test_that("sci_config_default validates weights sum to 1", {

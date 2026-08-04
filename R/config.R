@@ -8,9 +8,15 @@
 #'   `"quality"`, `"trace"`, `"risk"`, `"usability"`.
 #' @param bands Named list of numeric length-2 vectors defining SCI band
 #'   boundaries `c(lower, upper)`. Evaluated in order; first match wins.
+#' @param gate Named list controlling the non-compensatory gate. With
+#'   `critical_caps_band = TRUE`, an open critical finding caps the reported band
+#'   at `critical_cap` (a band name) no matter how high the weighted score is, so
+#'   a strong score in one pillar cannot wash out a critical failure in another.
+#'   Set `critical_caps_band = FALSE` to disable. This default is a starting
+#'   point that sponsors should calibrate, not validated truth.
 #'
 #' @return A list of class `"sci_config"` with elements:
-#'   `pillar_weights`, `bands`.
+#'   `pillar_weights`, `bands`, `gate`.
 #'
 #' @examples
 #' cfg <- sci_config_default()
@@ -30,7 +36,8 @@ sci_config_default <- function(
       minor_gaps  = c(70, 84),
       conditional = c(50, 69),
       high_risk   = c(0, 49)
-    )
+    ),
+    gate = list(critical_caps_band = TRUE, critical_cap = "conditional")
 ) {
   # Validate pillar_weights
   if (!is.numeric(pillar_weights) || is.null(names(pillar_weights))) {
@@ -59,10 +66,23 @@ sci_config_default <- function(
     }
   }
 
+  # Validate gate
+  if (!is.list(gate)) {
+    cli::cli_abort("{.arg gate} must be a list.")
+  }
+  if (isTRUE(gate$critical_caps_band)) {
+    if (is.null(gate$critical_cap) || !gate$critical_cap %in% names(bands)) {
+      cli::cli_abort(
+        "{.arg gate$critical_cap} must be one of the band names: {.val {names(bands)}}."
+      )
+    }
+  }
+
   structure(
     list(
       pillar_weights = pillar_weights,
-      bands          = bands
+      bands          = bands,
+      gate           = gate
     ),
     class = "sci_config"
   )
