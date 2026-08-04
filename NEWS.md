@@ -1,4 +1,4 @@
-# r4subscore (development version)
+# r4subscore 0.2.1
 
 - Add `sci_snapshot()`, `sci_diff()`, and `sci_snapshot_history()` for tracking
   readiness over time. A snapshot records the SCI, band, and pillar and indicator
