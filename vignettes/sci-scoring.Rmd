@@ -180,3 +180,50 @@ capped$gate_reason
 The numeric SCI is identical in both cases; only the band moves, so the score
 still tells you how much work remains. A sponsor that wants a different policy
 can move the cap or turn the gate off through `sci_config_default(gate = ...)`.
+
+## Tracking readiness over time
+
+A single score answers "are we ready today". The question a team actually lives
+with is "are we on track to file". Snapshots record the score at each dry run so
+successive runs can be compared. Here two runs on the same study, with one
+traceability failure fixed between them:
+
+```{r snapshots}
+ctx <- r4subcore::r4sub_run_context("STUDY1", "DEV")
+
+run_evidence <- function(trace_result) {
+  r4subcore::as_evidence(
+    data.frame(
+      asset_type = "dataset", asset_id = "ADSL", source_name = "pinnacle21",
+      indicator_id = c("Q-LABEL", "T-TRACE", "R-RPN"),
+      indicator_name = c("Labels present", "ADaM traces to SDTM", "Risk in range"),
+      indicator_domain = c("quality", "trace", "risk"),
+      severity = c("low", "high", "medium"),
+      result = c("pass", trace_result, "pass"),
+      stringsAsFactors = FALSE
+    ),
+    ctx = ctx
+  )
+}
+
+week1 <- sci_snapshot(run_evidence("fail"), "DB lock minus 8 weeks")
+week2 <- sci_snapshot(run_evidence("pass"), "DB lock minus 4 weeks")
+
+week1
+week2
+```
+
+`sci_diff()` reports what moved and why:
+
+```{r diff}
+d <- sci_diff(week1, week2)
+d
+d$indicators[, c("indicator_id", "status", "delta")]
+```
+
+`sci_snapshot_history()` binds a series into one row per run, ready for a trend
+plot:
+
+```{r history}
+sci_snapshot_history(list(week1, week2))
+```
