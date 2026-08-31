@@ -1,3 +1,13 @@
+# r4subscore 0.3.0
+
+- Add `sci_targets()` and `sci_gap_to_target()`. The first records the readiness
+  goal a submission is aiming for, either a band name such as `"ready"` or a
+  numeric SCI, with optional per-pillar minimums. The second measures how far a
+  scored run is from that goal and, for each pillar, reports the SCI points that
+  closing it would add, ordered so the biggest lever comes first. Where
+  `sci_diff()` answers "are we moving in the right direction", this answers "how
+  far are we from filing, and what should we fix next".
+
 # r4subscore 0.2.1
 
 - Add `sci_snapshot()`, `sci_diff()`, and `sci_snapshot_history()` for tracking
