@@ -77,6 +77,10 @@ pillar_scores <- compute_pillar_scores(ev, config = cfg)
 sci           <- compute_sci(pillar_scores, config = cfg)
 ```
 
+## Maintained by
+
+R4SUB is part of the open-source work of [TechWorksLab](https://techworkslab.com) - clinical programming and regulatory submissions. Maintainer: Pawan Rama Mali.
+
 ## License
 
 MIT
