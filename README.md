@@ -84,3 +84,7 @@ R4SUB is part of the open-source work of [TechWorksLab](https://techworkslab.com
 ## License
 
 MIT
+
+## Further reading
+
+- [Submission readiness as a number, not a meeting](https://techworkslab.com/insights-submission-confidence-index), the Submission Confidence Index model this package implements, from TECHWORKSLAB.
