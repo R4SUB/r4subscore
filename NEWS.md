@@ -1,3 +1,13 @@
+# r4subscore 0.4.0
+
+- Add `sci_report()`, an end-to-end readiness report that composes the SCI, the
+  decision band and its critical gate, the per-pillar breakdown, the findings
+  most worth acting on, and the pillars that offer the biggest improvement into
+  one object with a readable print method. Pass `targets` for a distance-to-goal
+  section, or a profile configuration as `config` for an authority-calibrated
+  report. This is the single call that answers "where do we stand and what do we
+  fix next" from an evidence table.
+
 # r4subscore 0.3.0
 
 - Add `sci_targets()` and `sci_gap_to_target()`. The first records the readiness
