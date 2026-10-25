@@ -18,7 +18,7 @@ navbar:
       aria-label: GitHub
 
 home:
-  title: "r4subscore — Submission Confidence Index (SCI) Engine"
+  title: "r4subscore: Submission Confidence Index (SCI) Engine"
 
 reference:
   - title: "Configuration"
