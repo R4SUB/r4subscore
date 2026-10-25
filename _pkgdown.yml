@@ -30,13 +30,36 @@ reference:
       - compute_sci
       - compute_indicator_scores
       - classify_band
-  - title: "Explainability"
+  - title: "Targets and gaps"
+    contents:
+      - sci_targets
+      - sci_gap_to_target
+      - sci_what_if
+  - title: "Confidence intervals"
+    contents:
+      - sci_confidence_interval
+      - format_sci_ci
+  - title: "Reporting and snapshots"
+    contents:
+      - sci_report
+      - sci_snapshot
+      - sci_snapshot_history
+      - sci_diff
+  - title: "Diagnostics and explainability"
     contents:
       - sci_explain
       - sci_sensitivity_analysis
+      - sci_monotone_check
+      - sci_degradation_curve
+      - indicator_contributions
+      - conformance_findings
   - title: "Print Methods"
     contents:
       - print.sci_result
+      - print.sci_ci
+      - print.sci_gap
+      - print.sci_report
+      - print.sci_targets
 
 footer:
   structure:
