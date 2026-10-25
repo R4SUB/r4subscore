@@ -43,8 +43,8 @@ The default weights are: quality 35%, trace 25%, risk 25%, usability
 |---------------|-----------|---------------------------------------|
 | `ready`       | 85-100    | Submission ready                      |
 | `minor_gaps`  | 70-84     | Minor gaps to address                 |
-| `conditional` | 50-69     | Conditional — significant work needed |
-| `high_risk`   | 0-49      | High risk — submission not advised    |
+| `conditional` | 50-69     | Conditional - significant work needed |
+| `high_risk`   | 0-49      | High risk - submission not advised    |
 
 ## Building example evidence
 
@@ -170,4 +170,144 @@ sci2$SCI
 #> [1] 81.2
 sci2$band
 #> [1] "minor_gaps"
+```
+
+## Confidence intervals
+
+A single SCI number hides how much of the score is measurement noise. An
+SCI of 72 could be a solid `conditional` result or a borderline
+`minor_gaps` one that happened to round down.
+[`sci_confidence_interval()`](https://r4sub.github.io/r4subscore/reference/sci_confidence_interval.md)
+resamples the evidence and reports where the SCI is likely to sit:
+
+``` r
+
+ci <- sci_confidence_interval(ev, n_boot = 500, seed = 1)
+ci
+#> ℹ SCI = 80.0 [61.2, 96.9] (95% CI)
+#> ℹ Point band: "minor_gaps"
+#> ! Interval spans bands "conditional" to "ready".
+```
+
+[`format_sci_ci()`](https://r4sub.github.io/r4subscore/reference/format_sci_ci.md)
+gives the compact form for a report or a slide:
+
+``` r
+
+format_sci_ci(ci)
+#> [1] "SCI = 80.0 [61.2, 96.9] (95% CI)"
+```
+
+Read the interval, not just the point estimate. When the interval sits
+entirely inside one decision band, the band is a firm call. When it
+straddles two bands, as flagged in the printout, the readiness decision
+is sensitive to which checks were run, and the honest answer is that
+more evidence is needed before the band can be trusted. The default
+scheme resamples indicator scores within each pillar; pass
+`by = "evidence"` to resample the raw evidence rows instead.
+
+## Critical findings cap the band
+
+The SCI is a weighted average, so a strong pillar can lift the score
+even when another pillar hides a serious problem. That is the wrong
+behavior for a readiness call: a single critical failure should not be
+averaged away. The scoring config carries a non-compensatory gate that
+caps the band when an open critical finding is present. The pipeline
+applies it automatically, counting critical findings (severity
+`critical`, result `fail`) from the evidence, but it is easiest to see
+with the count passed directly:
+
+``` r
+
+strong <- data.frame(
+  pillar       = c("quality", "trace", "risk", "usability"),
+  pillar_score = c(0.95, 0.92, 0.90, 0.93),
+  weight       = c(0.35, 0.25, 0.25, 0.15)
+)
+
+compute_sci(strong, n_critical = 0)$band
+#> [1] "ready"
+
+capped <- compute_sci(strong, n_critical = 1)
+capped$band
+#> [1] "conditional"
+capped$gate_reason
+#> [1] "1 open critical finding; band capped at conditional."
+```
+
+The numeric SCI is identical in both cases; only the band moves, so the
+score still tells you how much work remains. A sponsor that wants a
+different policy can move the cap or turn the gate off through
+`sci_config_default(gate = ...)`.
+
+## Tracking readiness over time
+
+A single score answers “are we ready today”. The question a team
+actually lives with is “are we on track to file”. Snapshots record the
+score at each dry run so successive runs can be compared. Here two runs
+on the same study, with one traceability failure fixed between them:
+
+``` r
+
+ctx <- r4subcore::r4sub_run_context("STUDY1", "DEV")
+#> ℹ Run context created: "R4S-20261025205033-f2pi2o1y"
+
+run_evidence <- function(trace_result) {
+  r4subcore::as_evidence(
+    data.frame(
+      asset_type = "dataset", asset_id = "ADSL", source_name = "pinnacle21",
+      indicator_id = c("Q-LABEL", "T-TRACE", "R-RPN"),
+      indicator_name = c("Labels present", "ADaM traces to SDTM", "Risk in range"),
+      indicator_domain = c("quality", "trace", "risk"),
+      severity = c("low", "high", "medium"),
+      result = c("pass", trace_result, "pass"),
+      stringsAsFactors = FALSE
+    ),
+    ctx = ctx
+  )
+}
+
+week1 <- sci_snapshot(run_evidence("fail"), "DB lock minus 8 weeks")
+#> ✔ Evidence table created: 3 rows
+week2 <- sci_snapshot(run_evidence("pass"), "DB lock minus 4 weeks")
+#> ✔ Evidence table created: 3 rows
+
+week1
+#> ℹ SCI snapshot: "DB lock minus 8 weeks"
+#> ℹ   SCI 45.6 (high_risk)
+week2
+#> ℹ SCI snapshot: "DB lock minus 4 weeks"
+#> ℹ   SCI 52.9 (conditional)
+```
+
+[`sci_diff()`](https://r4sub.github.io/r4subscore/reference/sci_diff.md)
+reports what moved and why:
+
+``` r
+
+d <- sci_diff(week1, week2)
+d
+#> ℹ SCI change: 7.3 (up)
+#> ℹ Band: high_risk -> conditional
+#> ℹ Indicators moved: 1
+d$indicators[, c("indicator_id", "status", "delta")]
+#> # A tibble: 3 × 3
+#>   indicator_id status    delta
+#>   <chr>        <chr>     <dbl>
+#> 1 T-TRACE      improved   0.25
+#> 2 Q-LABEL      unchanged  0   
+#> 3 R-RPN        unchanged  0
+```
+
+[`sci_snapshot_history()`](https://r4sub.github.io/r4subscore/reference/sci_snapshot_history.md)
+binds a series into one row per run, ready for a trend plot:
+
+``` r
+
+sci_snapshot_history(list(week1, week2))
+#> # A tibble: 2 × 8
+#>   label                   sci band      n_critical quality trace  risk usability
+#>   <chr>                 <dbl> <chr>          <int>   <dbl> <dbl> <dbl>     <dbl>
+#> 1 DB lock minus 8 weeks  45.6 high_risk          0    0.75  0      0.5        NA
+#> 2 DB lock minus 4 weeks  52.9 conditio…          0    0.75  0.25   0.5        NA
 ```

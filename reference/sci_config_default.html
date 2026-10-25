@@ -9,7 +9,7 @@ and scoring parameters for the Submission Confidence Index."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">r4subscore</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +20,9 @@ and scoring parameters for the Submission Confidence Index."></head><body>
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/case-study-cdisc-pilot.html">Case study: scoring a CDISC pilot for submission readiness</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-validation.html">Validating the Submission Confidence Index</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -49,7 +51,8 @@ and scoring parameters for the Submission Confidence Index.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sci_config_default</span><span class="op">(</span></span>
 <span>  pillar_weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>quality <span class="op">=</span> <span class="fl">0.35</span>, trace <span class="op">=</span> <span class="fl">0.25</span>, risk <span class="op">=</span> <span class="fl">0.25</span>, usability <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span>,</span>
 <span>  bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ready <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">85</span>, <span class="fl">100</span><span class="op">)</span>, minor_gaps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">70</span>, <span class="fl">84</span><span class="op">)</span>, conditional <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">69</span><span class="op">)</span>,</span>
-<span>    high_risk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">49</span><span class="op">)</span><span class="op">)</span></span>
+<span>    high_risk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">49</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  gate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>critical_caps_band <span class="op">=</span> <span class="cn">TRUE</span>, critical_cap <span class="op">=</span> <span class="st">"conditional"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -67,11 +70,20 @@ Must sum to 1. Names must be a subset of
 <dd><p>Named list of numeric length-2 vectors defining SCI band
 boundaries <code>c(lower, upper)</code>. Evaluated in order; first match wins.</p></dd>
 
+
+<dt id="arg-gate">gate<a class="anchor" aria-label="anchor" href="#arg-gate"></a></dt>
+<dd><p>Named list controlling the non-compensatory gate. With
+<code>critical_caps_band = TRUE</code>, an open critical finding caps the reported band
+at <code>critical_cap</code> (a band name) no matter how high the weighted score is, so
+a strong score in one pillar cannot wash out a critical failure in another.
+Set <code>critical_caps_band = FALSE</code> to disable. This default is a starting
+point that sponsors should calibrate, not validated truth.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list of class <code>"sci_config"</code> with elements:
-<code>pillar_weights</code>, <code>bands</code>.</p>
+<code>pillar_weights</code>, <code>bands</code>, <code>gate</code>.</p>
     </div>
 
     <div class="section level2">
@@ -114,6 +126,14 @@ boundaries <code>c(lower, upper)</code>. Evaluated in order; first match wins.</
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $bands$high_risk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0 49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $gate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $gate$critical_caps_band</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $gate$critical_cap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "conditional"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>

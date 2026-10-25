@@ -23,7 +23,10 @@ compute_pillar_scores(evidence, config = sci_config_default())
 ## Value
 
 A tibble with columns: `pillar`, `pillar_score`, `n_indicators`,
-`weight`.
+`weight`. The number of open critical findings (severity `critical`,
+result `fail`) is attached as an `n_critical` attribute, which
+[`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md)
+reads to apply the non-compensatory gate.
 
 ## Examples
 

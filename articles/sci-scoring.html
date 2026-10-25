@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">r4subscore</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,9 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+<li><a class="dropdown-item" href="../articles/case-study-cdisc-pilot.html">Case study: scoring a CDISC pilot for submission readiness</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-validation.html">Validating the Submission Confidence Index</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -119,12 +121,12 @@ decision-band thresholds:</p>
 <tr class="odd">
 <td><code>conditional</code></td>
 <td>50-69</td>
-<td>Conditional — significant work needed</td>
+<td>Conditional - significant work needed</td>
 </tr>
 <tr class="even">
 <td><code>high_risk</code></td>
 <td>0-49</td>
-<td>High risk — submission not advised</td>
+<td>High risk - submission not advised</td>
 </tr>
 </tbody>
 </table>
@@ -243,6 +245,126 @@ the score is to weighting choices:</p>
 <span><span class="co">#&gt; [1] 81.2</span></span>
 <span><span class="va">sci2</span><span class="op">$</span><span class="va">band</span></span>
 <span><span class="co">#&gt; [1] "minor_gaps"</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="confidence-intervals">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a>
+</h2>
+<p>A single SCI number hides how much of the score is measurement noise.
+An SCI of 72 could be a solid <code>conditional</code> result or a
+borderline <code>minor_gaps</code> one that happened to round down.
+<code><a href="../reference/sci_confidence_interval.html">sci_confidence_interval()</a></code> resamples the evidence and
+reports where the SCI is likely to sit:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sci_confidence_interval.html">sci_confidence_interval</a></span><span class="op">(</span><span class="va">ev</span>, n_boot <span class="op">=</span> <span class="fl">500</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">ci</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> SCI = 80.0 [61.2, 96.9] (95% CI)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Point band: <span style="color: #0000BB;">"minor_gaps"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Interval spans bands <span style="color: #0000BB;">"conditional"</span> to <span style="color: #0000BB;">"ready"</span>.</span></span></code></pre></div>
+<p><code><a href="../reference/format_sci_ci.html">format_sci_ci()</a></code> gives the compact form for a report or a
+slide:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/format_sci_ci.html">format_sci_ci</a></span><span class="op">(</span><span class="va">ci</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "SCI = 80.0 [61.2, 96.9] (95% CI)"</span></span></code></pre></div>
+<p>Read the interval, not just the point estimate. When the interval
+sits entirely inside one decision band, the band is a firm call. When it
+straddles two bands, as flagged in the printout, the readiness decision
+is sensitive to which checks were run, and the honest answer is that
+more evidence is needed before the band can be trusted. The default
+scheme resamples indicator scores within each pillar; pass
+<code>by = "evidence"</code> to resample the raw evidence rows
+instead.</p>
+</div>
+<div class="section level2">
+<h2 id="critical-findings-cap-the-band">Critical findings cap the band<a class="anchor" aria-label="anchor" href="#critical-findings-cap-the-band"></a>
+</h2>
+<p>The SCI is a weighted average, so a strong pillar can lift the score
+even when another pillar hides a serious problem. That is the wrong
+behavior for a readiness call: a single critical failure should not be
+averaged away. The scoring config carries a non-compensatory gate that
+caps the band when an open critical finding is present. The pipeline
+applies it automatically, counting critical findings (severity
+<code>critical</code>, result <code>fail</code>) from the evidence, but
+it is easiest to see with the count passed directly:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">strong</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  pillar       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"quality"</span>, <span class="st">"trace"</span>, <span class="st">"risk"</span>, <span class="st">"usability"</span><span class="op">)</span>,</span>
+<span>  pillar_score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.92</span>, <span class="fl">0.90</span>, <span class="fl">0.93</span><span class="op">)</span>,</span>
+<span>  weight       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.35</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.15</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/compute_sci.html">compute_sci</a></span><span class="op">(</span><span class="va">strong</span>, n_critical <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">band</span></span>
+<span><span class="co">#&gt; [1] "ready"</span></span>
+<span></span>
+<span><span class="va">capped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_sci.html">compute_sci</a></span><span class="op">(</span><span class="va">strong</span>, n_critical <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">capped</span><span class="op">$</span><span class="va">band</span></span>
+<span><span class="co">#&gt; [1] "conditional"</span></span>
+<span><span class="va">capped</span><span class="op">$</span><span class="va">gate_reason</span></span>
+<span><span class="co">#&gt; [1] "1 open critical finding; band capped at conditional."</span></span></code></pre></div>
+<p>The numeric SCI is identical in both cases; only the band moves, so
+the score still tells you how much work remains. A sponsor that wants a
+different policy can move the cap or turn the gate off through
+<code>sci_config_default(gate = ...)</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="tracking-readiness-over-time">Tracking readiness over time<a class="anchor" aria-label="anchor" href="#tracking-readiness-over-time"></a>
+</h2>
+<p>A single score answers “are we ready today”. The question a team
+actually lives with is “are we on track to file”. Snapshots record the
+score at each dry run so successive runs can be compared. Here two runs
+on the same study, with one traceability failure fixed between them:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ctx</span> <span class="op">&lt;-</span> <span class="fu">r4subcore</span><span class="fu">::</span><span class="fu"><a href="https://r4sub.github.io/r4subcore/reference/r4sub_run_context.html" class="external-link">r4sub_run_context</a></span><span class="op">(</span><span class="st">"STUDY1"</span>, <span class="st">"DEV"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Run context created: <span style="color: #0000BB;">"R4S-20261025205033-f2pi2o1y"</span></span></span>
+<span></span>
+<span><span class="va">run_evidence</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">trace_result</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">r4subcore</span><span class="fu">::</span><span class="fu"><a href="https://r4sub.github.io/r4subcore/reference/as_evidence.html" class="external-link">as_evidence</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>      asset_type <span class="op">=</span> <span class="st">"dataset"</span>, asset_id <span class="op">=</span> <span class="st">"ADSL"</span>, source_name <span class="op">=</span> <span class="st">"pinnacle21"</span>,</span>
+<span>      indicator_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Q-LABEL"</span>, <span class="st">"T-TRACE"</span>, <span class="st">"R-RPN"</span><span class="op">)</span>,</span>
+<span>      indicator_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Labels present"</span>, <span class="st">"ADaM traces to SDTM"</span>, <span class="st">"Risk in range"</span><span class="op">)</span>,</span>
+<span>      indicator_domain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"quality"</span>, <span class="st">"trace"</span>, <span class="st">"risk"</span><span class="op">)</span>,</span>
+<span>      severity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"high"</span>, <span class="st">"medium"</span><span class="op">)</span>,</span>
+<span>      result <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pass"</span>, <span class="va">trace_result</span>, <span class="st">"pass"</span><span class="op">)</span>,</span>
+<span>      stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    ctx <span class="op">=</span> <span class="va">ctx</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">week1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sci_snapshot.html">sci_snapshot</a></span><span class="op">(</span><span class="fu">run_evidence</span><span class="op">(</span><span class="st">"fail"</span><span class="op">)</span>, <span class="st">"DB lock minus 8 weeks"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Evidence table created: 3 rows</span></span>
+<span><span class="va">week2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sci_snapshot.html">sci_snapshot</a></span><span class="op">(</span><span class="fu">run_evidence</span><span class="op">(</span><span class="st">"pass"</span><span class="op">)</span>, <span class="st">"DB lock minus 4 weeks"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Evidence table created: 3 rows</span></span>
+<span></span>
+<span><span class="va">week1</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> SCI snapshot: <span style="color: #0000BB;">"DB lock minus 8 weeks"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span>   SCI <span style="color: #0000BB;">45.6</span> (high_risk)</span></span>
+<span><span class="va">week2</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> SCI snapshot: <span style="color: #0000BB;">"DB lock minus 4 weeks"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span>   SCI <span style="color: #0000BB;">52.9</span> (conditional)</span></span></code></pre></div>
+<p><code><a href="../reference/sci_diff.html">sci_diff()</a></code> reports what moved and why:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sci_diff.html">sci_diff</a></span><span class="op">(</span><span class="va">week1</span>, <span class="va">week2</span><span class="op">)</span></span>
+<span><span class="va">d</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> SCI change: <span style="color: #0000BB;">7.3</span> (up)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Band: high_risk -&gt; conditional</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Indicators moved: 1</span></span>
+<span><span class="va">d</span><span class="op">$</span><span class="va">indicators</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"indicator_id"</span>, <span class="st">"status"</span>, <span class="st">"delta"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
+<span><span class="co">#&gt;   indicator_id status    delta</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> T-TRACE      improved   0.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Q-LABEL      unchanged  0   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> R-RPN        unchanged  0</span></span></code></pre></div>
+<p><code><a href="../reference/sci_snapshot_history.html">sci_snapshot_history()</a></code> binds a series into one row per
+run, ready for a trend plot:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/sci_snapshot_history.html">sci_snapshot_history</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">week1</span>, <span class="va">week2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
+<span><span class="co">#&gt;   label                   sci band      n_critical quality trace  risk usability</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> DB lock minus 8 weeks  45.6 high_risk          0    0.75  0      0.5        <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> DB lock minus 4 weeks  52.9 conditio…          0    0.75  0.25   0.5        <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

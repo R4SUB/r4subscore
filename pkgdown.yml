@@ -2,8 +2,10 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
+  case-study-cdisc-pilot: case-study-cdisc-pilot.html
   sci-scoring: sci-scoring.html
-last_built: 2026-07-16T04:49Z
+  sci-validation: sci-validation.html
+last_built: 2026-10-25T20:50Z
 urls:
   reference: https://r4sub.github.io/r4subscore/reference
   article: https://r4sub.github.io/r4subscore/articles

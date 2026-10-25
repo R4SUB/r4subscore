@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">r4subscore</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,9 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/case-study-cdisc-pilot.html">Case study: scoring a CDISC pilot for submission readiness</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-validation.html">Validating the Submission Confidence Index</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -37,8 +39,32 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="r4subscore-development-version">r4subscore (development version)<a class="anchor" aria-label="anchor" href="#r4subscore-development-version"></a></h2>
-<ul><li>Clarified the package DESCRIPTION: “R4SUB” expands to “Ready for Submission” (previously “R for Regulatory Submission”, inconsistent with the rest of the ecosystem).</li>
+<h2 class="pkg-version" data-toc-text="0.4.1" id="r4subscore-041">r4subscore 0.4.1<a class="anchor" aria-label="anchor" href="#r4subscore-041"></a></h2>
+<ul><li>Complete the pkgdown reference index so the documentation site builds, and polish metadata for CRAN.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="r4subscore-040">r4subscore 0.4.0<a class="anchor" aria-label="anchor" href="#r4subscore-040"></a></h2>
+<ul><li>Add <code><a href="../reference/sci_report.html">sci_report()</a></code>, an end-to-end readiness report that composes the SCI, the decision band and its critical gate, the per-pillar breakdown, the findings most worth acting on, and the pillars that offer the biggest improvement into one object with a readable print method. Pass <code>targets</code> for a distance-to-goal section, or a profile configuration as <code>config</code> for an authority-calibrated report. This is the single call that answers “where do we stand and what do we fix next” from an evidence table.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="r4subscore-030">r4subscore 0.3.0<a class="anchor" aria-label="anchor" href="#r4subscore-030"></a></h2>
+<ul><li>Add <code><a href="../reference/sci_targets.html">sci_targets()</a></code> and <code><a href="../reference/sci_gap_to_target.html">sci_gap_to_target()</a></code>. The first records the readiness goal a submission is aiming for, either a band name such as <code>"ready"</code> or a numeric SCI, with optional per-pillar minimums. The second measures how far a scored run is from that goal and, for each pillar, reports the SCI points that closing it would add, ordered so the biggest lever comes first. Where <code><a href="../reference/sci_diff.html">sci_diff()</a></code> answers “are we moving in the right direction”, this answers “how far are we from filing, and what should we fix next”.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.1" id="r4subscore-021">r4subscore 0.2.1<a class="anchor" aria-label="anchor" href="#r4subscore-021"></a></h2>
+<ul><li>Add <code><a href="../reference/sci_snapshot.html">sci_snapshot()</a></code>, <code><a href="../reference/sci_diff.html">sci_diff()</a></code>, and <code><a href="../reference/sci_snapshot_history.html">sci_snapshot_history()</a></code> for tracking readiness over time. A snapshot records the SCI, band, and pillar and indicator scores for one run under a label; <code><a href="../reference/sci_diff.html">sci_diff()</a></code> reports what moved between two runs (overall SCI change, band change, per-pillar deltas, and which indicators improved, regressed, were added, or removed); and <code><a href="../reference/sci_snapshot_history.html">sci_snapshot_history()</a></code> binds a series into a tidy table for a trend plot. This turns the SCI from a single-run report card into a way to answer whether a submission is on trajectory to file.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="r4subscore-020">r4subscore 0.2.0<a class="anchor" aria-label="anchor" href="#r4subscore-020"></a></h2>
+<ul><li>Add a non-compensatory gate to the SCI. An open critical finding (severity <code>critical</code>, result <code>fail</code>) now caps the reported band at <code>conditional</code> by default, so a strong score in one pillar cannot wash out a critical failure in another. The numeric SCI is left unchanged; only the band is capped, and <code><a href="../reference/compute_sci.html">compute_sci()</a></code> records <code>n_critical</code>, <code>gated</code>, and a <code>gate_reason</code>. The gate is configurable through <code>sci_config_default(gate = ...)</code> and applies automatically through the standard pipeline. The default is a starting point sponsors should calibrate, not validated truth.</li>
+<li>Add <code><a href="../reference/indicator_contributions.html">indicator_contributions()</a></code>, which breaks a pillar score down into per-indicator contributions, ranks indicators by how many SCI points a fix could recover, and attaches a short remediation hint to each one.</li>
+<li>Add <code><a href="../reference/sci_what_if.html">sci_what_if()</a></code>, which recomputes the pillar score and the SCI exactly as if one indicator had a different score, for planning remediation.</li>
+<li>Add <code><a href="../reference/sci_confidence_interval.html">sci_confidence_interval()</a></code>, a bootstrap confidence interval for the SCI so a readiness decision can account for measurement noise, with a <code><a href="../reference/format_sci_ci.html">format_sci_ci()</a></code> helper for the compact <code>SCI = 82.0 [76.0, 88.0]</code> form and a print method that flags when the interval straddles two decision bands.</li>
+<li>Document confidence-interval interpretation in the scoring vignette.</li>
+<li>Add vignette: “Case study: scoring a CDISC pilot for submission readiness”, a worked walkthrough of the SCI on the example pharma evidence from <code>r4subdata</code>.</li>
+<li>Add validation helpers: <code><a href="../reference/sci_degradation_curve.html">sci_degradation_curve()</a></code> records how the SCI responds as passing checks are turned into failures, <code><a href="../reference/sci_monotone_check.html">sci_monotone_check()</a></code> confirms a curve never rises, and <code><a href="../reference/conformance_findings.html">conformance_findings()</a></code> produces an independent severity-weighted finding count for concurrent-validity checks.</li>
+<li>Add vignette: “Validating the Submission Confidence Index”, covering construct, discriminant, concurrent, and robustness validity, and documenting a calibration finding about how severity discounts passing credit.</li>
+<li>Clarified the package DESCRIPTION: “R4SUB” expands to “Ready for Submission” (previously “R for Regulatory Submission”, inconsistent with the rest of the ecosystem).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="r4subscore-011">r4subscore 0.1.1<a class="anchor" aria-label="anchor" href="#r4subscore-011"></a></h2>

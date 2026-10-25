@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">r4subscore</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,9 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/case-study-cdisc-pilot.html">Case study: scoring a CDISC pilot for submission readiness</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-scoring.html">Submission Confidence Index (SCI) Scoring</a></li>
+    <li><a class="dropdown-item" href="../articles/sci-validation.html">Validating the Submission Confidence Index</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -89,7 +91,97 @@
         </dt>
         <dd>Classify SCI Value into Decision Band</dd>
       </dl></div><div class="section level2">
-      <h2 id="explainability">Explainability<a class="anchor" aria-label="anchor" href="#explainability"></a></h2>
+      <h2 id="targets-and-gaps">Targets and gaps<a class="anchor" aria-label="anchor" href="#targets-and-gaps"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="sci_targets.html">sci_targets()</a></code>
+
+        </dt>
+        <dd>Define an SCI Target</dd>
+
+        <dt>
+
+          <code><a href="sci_gap_to_target.html">sci_gap_to_target()</a></code>
+
+        </dt>
+        <dd>Measure the Gap Between a Scored Run and a Target</dd>
+
+        <dt>
+
+          <code><a href="sci_what_if.html">sci_what_if()</a></code>
+
+        </dt>
+        <dd>What-If Analysis for a Single Indicator</dd>
+      </dl></div><div class="section level2">
+      <h2 id="confidence-intervals">Confidence intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="sci_confidence_interval.html">sci_confidence_interval()</a></code>
+
+        </dt>
+        <dd>Bootstrap Confidence Interval for the SCI</dd>
+
+        <dt>
+
+          <code><a href="format_sci_ci.html">format_sci_ci()</a></code>
+
+        </dt>
+        <dd>Format an SCI Confidence Interval</dd>
+      </dl></div><div class="section level2">
+      <h2 id="reporting-and-snapshots">Reporting and snapshots<a class="anchor" aria-label="anchor" href="#reporting-and-snapshots"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="sci_report.html">sci_report()</a></code>
+
+        </dt>
+        <dd>End-to-End Submission Readiness Report</dd>
+
+        <dt>
+
+          <code><a href="sci_snapshot.html">sci_snapshot()</a></code> <code><a href="sci_snapshot.html">print(<i>&lt;sci_snapshot&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Capture an SCI Snapshot</dd>
+
+        <dt>
+
+          <code><a href="sci_snapshot_history.html">sci_snapshot_history()</a></code>
+
+        </dt>
+        <dd>Build a History Table from SCI Snapshots</dd>
+
+        <dt>
+
+          <code><a href="sci_diff.html">sci_diff()</a></code> <code><a href="sci_diff.html">print(<i>&lt;sci_diff&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Diff Two SCI Snapshots</dd>
+      </dl></div><div class="section level2">
+      <h2 id="diagnostics-and-explainability">Diagnostics and explainability<a class="anchor" aria-label="anchor" href="#diagnostics-and-explainability"></a></h2>
 
 
 
@@ -111,6 +203,34 @@
 
         </dt>
         <dd>SCI Sensitivity Analysis</dd>
+
+        <dt>
+
+          <code><a href="sci_monotone_check.html">sci_monotone_check()</a></code>
+
+        </dt>
+        <dd>Check that an SCI Degradation Curve Never Rises</dd>
+
+        <dt>
+
+          <code><a href="sci_degradation_curve.html">sci_degradation_curve()</a></code>
+
+        </dt>
+        <dd>SCI Degradation Curve</dd>
+
+        <dt>
+
+          <code><a href="indicator_contributions.html">indicator_contributions()</a></code>
+
+        </dt>
+        <dd>Per-Indicator Contribution Breakdown</dd>
+
+        <dt>
+
+          <code><a href="conformance_findings.html">conformance_findings()</a></code>
+
+        </dt>
+        <dd>Count Severity-Weighted Conformance Findings</dd>
       </dl></div><div class="section level2">
       <h2 id="print-methods">Print Methods<a class="anchor" aria-label="anchor" href="#print-methods"></a></h2>
 
@@ -127,6 +247,34 @@
 
         </dt>
         <dd>Print SCI Result</dd>
+
+        <dt>
+
+          <code><a href="print.sci_ci.html">print(<i>&lt;sci_ci&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print an SCI Confidence Interval</dd>
+
+        <dt>
+
+          <code><a href="print.sci_gap.html">print(<i>&lt;sci_gap&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print an SCI Gap</dd>
+
+        <dt>
+
+          <code><a href="print.sci_report.html">print(<i>&lt;sci_report&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print an SCI Report</dd>
+
+        <dt>
+
+          <code><a href="print.sci_targets.html">print(<i>&lt;sci_targets&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Print an SCI Target</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

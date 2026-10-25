@@ -32,7 +32,7 @@ library(r4subscore)
 pillar_scores <- compute_pillar_scores(ev)
 sci           <- compute_sci(pillar_scores)
 
-sci$SCI   # 0–100
+sci$SCI   # 0-100
 sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 ```
 
@@ -40,10 +40,10 @@ sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 
 | SCI    | Band          | Interpretation                  |
 |--------|---------------|---------------------------------|
-| 85–100 | `ready`       | Ready for Submission            |
-| 70–84  | `minor_gaps`  | Minor Gaps to Address           |
-| 50–69  | `conditional` | Conditional, address key issues |
-| 0–49   | `high_risk`   | High Risk                       |
+| 85-100 | `ready`       | Ready for Submission            |
+| 70-84  | `minor_gaps`  | Minor Gaps to Address           |
+| 50-69  | `conditional` | Conditional, address key issues |
+| 0-49   | `high_risk`   | High Risk                       |
 
 ## Scoring Logic
 
@@ -62,7 +62,7 @@ sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 | [`classify_band()`](https://r4sub.github.io/r4subscore/reference/classify_band.md) | Classify an SCI value into a decision band |
 | [`compute_indicator_scores()`](https://r4sub.github.io/r4subscore/reference/compute_indicator_scores.md) | Severity-weighted indicator-level scores |
 | [`compute_pillar_scores()`](https://r4sub.github.io/r4subscore/reference/compute_pillar_scores.md) | Aggregate indicators into pillar scores |
-| [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md) | Compute SCI (0–100) and band classification |
+| [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md) | Compute SCI (0-100) and band classification |
 | [`sci_sensitivity_analysis()`](https://r4sub.github.io/r4subscore/reference/sci_sensitivity_analysis.md) | SCI under alternative weight scenarios |
 | [`sci_explain()`](https://r4sub.github.io/r4subscore/reference/sci_explain.md) | Top loss contributors and pillar breakdown |
 
@@ -80,6 +80,19 @@ pillar_scores <- compute_pillar_scores(ev, config = cfg)
 sci           <- compute_sci(pillar_scores, config = cfg)
 ```
 
+## Maintained by
+
+R4SUB is part of the open-source work of
+[TechWorksLab](https://techworkslab.com) - clinical programming and
+regulatory submissions. Maintainer: Pawan Rama Mali.
+
 ## License
 
 MIT
+
+## Further reading
+
+- [Submission readiness as a number, not a
+  meeting](https://techworkslab.com/insights-submission-confidence-index),
+  the Submission Confidence Index model this package implements, from
+  TECHWORKSLAB.
