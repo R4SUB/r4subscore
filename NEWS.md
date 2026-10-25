@@ -1,3 +1,7 @@
+# r4subscore 0.4.1
+
+- Complete the pkgdown reference index so the documentation site builds, and polish metadata for CRAN.
+
 # r4subscore 0.4.0
 
 - Add `sci_report()`, an end-to-end readiness report that composes the SCI, the
