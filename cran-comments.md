@@ -1,6 +1,6 @@
 ## Submission
 
-This is an update of r4subscore from 0.1.0 (on CRAN) to 0.2.1, a feature release
+This is an update of r4subscore from 0.1.0 (on CRAN) to 0.4.1, a feature release
 for the R4SUB (Ready for Submission) ecosystem. Highlights:
 
 * Per-indicator contribution breakdown and a what-if planner.
