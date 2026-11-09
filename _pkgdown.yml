@@ -42,6 +42,7 @@ reference:
   - title: "Reporting and snapshots"
     contents:
       - sci_report
+      - report_markdown
       - sci_snapshot
       - sci_snapshot_history
       - sci_diff

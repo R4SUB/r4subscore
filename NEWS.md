@@ -1,3 +1,12 @@
+# r4subscore (development version)
+
+- Add `report_markdown()`, which renders the object from `sci_report()` as a
+  shareable Markdown readiness memo: the SCI and decision band, the distance to
+  target, the per-pillar breakdown, the findings worth acting on, and the
+  biggest levers, ready to paste into a pull request, issue, or status note. The
+  memo is labelled decision support, not a regulatory filing document. The
+  `sci_report()` object and all scoring, band, and gate logic are unchanged.
+
 # r4subscore 0.4.1
 
 - Complete the pkgdown reference index so the documentation site builds, and polish metadata for CRAN.
