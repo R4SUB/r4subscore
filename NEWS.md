@@ -1,5 +1,14 @@
 # r4subscore (development version)
 
+- Add `sci_weight_robustness()`, a read-only diagnostic that auto-perturbs the
+  pillar weights around the current configuration (one-at-a-time nudges and
+  small simplex transfers) and reports the smallest weight change that flips
+  the reported decision band. It reuses `compute_sci()` and `classify_band()`
+  unchanged and holds the pillar scores and the critical-finding count fixed, so
+  it only measures band stability. It is a robustness diagnostic, not a
+  calibration or validation of the weights, and returns a tidy result with a
+  print method.
+
 - Add `report_markdown()`, which renders the object from `sci_report()` as a
   shareable Markdown readiness memo: the SCI and decision band, the distance to
   target, the per-pillar breakdown, the findings worth acting on, and the
