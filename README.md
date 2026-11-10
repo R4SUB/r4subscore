@@ -62,7 +62,9 @@ sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 | `compute_pillar_scores()` | Aggregate indicators into pillar scores |
 | `compute_sci()` | Compute SCI (0-100) and band classification |
 | `sci_sensitivity_analysis()` | SCI under alternative weight scenarios |
+| `sci_weight_robustness()` | Perturb pillar weights and report the smallest shift that flips the decision band |
 | `sci_explain()` | Top loss contributors and pillar breakdown |
+| `report_markdown()` | Render an `sci_report` object as a shareable Markdown memo |
 
 ## Integration with r4subprofile
 
