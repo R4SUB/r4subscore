@@ -49,6 +49,7 @@ reference:
   - title: "Diagnostics and explainability"
     contents:
       - sci_explain
+      - sci_decompose
       - sci_sensitivity_analysis
       - sci_monotone_check
       - sci_degradation_curve
