@@ -35,6 +35,7 @@ reference:
       - sci_targets
       - sci_gap_to_target
       - sci_what_if
+      - sci_scenario
   - title: "Confidence intervals"
     contents:
       - sci_confidence_interval

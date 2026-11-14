@@ -1,5 +1,18 @@
 # r4subscore (development version)
 
+- Add `sci_scenario()`, a what-if analyzer that recomputes the SCI for one or
+  more caller-specified hypothetical changes to the evidence (for example "if
+  `Q1` flips from fail to pass" or "if these findings were resolved") and
+  returns a tidy comparison: the baseline SCI, each scenario's SCI, the delta,
+  the band movement, and which indicators drove it. Every what-if input is
+  supplied by the caller; the function only edits a copy of the evidence,
+  re-validates it, and re-runs the existing `compute_pillar_scores()` and
+  `compute_sci()` engine, so it invents no weights, thresholds, or scores. The
+  drivers reuse `sci_decompose()`, so each indicator's change in earned SCI
+  points sums to the scenario delta - an exact accounting of the move rather
+  than a heuristic ranking. This answers "what is the highest-leverage fix to
+  raise our readiness score?" purely mechanically.
+
 - Add `sci_decompose()`, an exact additive decomposition of the reported SCI
   into the points each pillar, and each indicator, earns and leaves on the
   table. It reuses the effective (renormalised) weights that `compute_sci()`
