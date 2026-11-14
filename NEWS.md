@@ -1,5 +1,16 @@
 # r4subscore (development version)
 
+- Add `sci_decompose()`, an exact additive decomposition of the reported SCI
+  into the points each pillar, and each indicator, earns and leaves on the
+  table. It reuses the effective (renormalised) weights that `compute_sci()`
+  actually applied, so the earned points reconcile to the reported SCI even
+  when a pillar is missing and its weight has been redistributed, which is
+  where the nominal-weight contributions in `sci_explain()` do not add up. It
+  reports a dual `earned`/`shortfall` split that partitions each pillar's
+  weight budget and sums to 100 overall, and pushes the same split down to
+  indicators. It introduces no new scoring semantics, weights, or thresholds;
+  it only re-expresses the existing score as a reconciled waterfall.
+
 - Add `sci_weight_robustness()`, a read-only diagnostic that auto-perturbs the
   pillar weights around the current configuration (one-at-a-time nudges and
   small simplex transfers) and reports the smallest weight change that flips
