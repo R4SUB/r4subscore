@@ -1,5 +1,69 @@
 # Changelog
 
+## r4subscore (development version)
+
+- Add
+  [`sci_scenario()`](https://r4sub.github.io/r4subscore/reference/sci_scenario.md),
+  a what-if analyzer that recomputes the SCI for one or more
+  caller-specified hypothetical changes to the evidence (for example “if
+  `Q1` flips from fail to pass” or “if these findings were resolved”)
+  and returns a tidy comparison: the baseline SCI, each scenario’s SCI,
+  the delta, the band movement, and which indicators drove it. Every
+  what-if input is supplied by the caller; the function only edits a
+  copy of the evidence, re-validates it, and re-runs the existing
+  [`compute_pillar_scores()`](https://r4sub.github.io/r4subscore/reference/compute_pillar_scores.md)
+  and
+  [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md)
+  engine, so it invents no weights, thresholds, or scores. The drivers
+  reuse
+  [`sci_decompose()`](https://r4sub.github.io/r4subscore/reference/sci_decompose.md),
+  so each indicator’s change in earned SCI points sums to the scenario
+  delta - an exact accounting of the move rather than a heuristic
+  ranking. This answers “what is the highest-leverage fix to raise our
+  readiness score?” purely mechanically.
+
+- Add
+  [`sci_decompose()`](https://r4sub.github.io/r4subscore/reference/sci_decompose.md),
+  an exact additive decomposition of the reported SCI into the points
+  each pillar, and each indicator, earns and leaves on the table. It
+  reuses the effective (renormalised) weights that
+  [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md)
+  actually applied, so the earned points reconcile to the reported SCI
+  even when a pillar is missing and its weight has been redistributed,
+  which is where the nominal-weight contributions in
+  [`sci_explain()`](https://r4sub.github.io/r4subscore/reference/sci_explain.md)
+  do not add up. It reports a dual `earned`/`shortfall` split that
+  partitions each pillar’s weight budget and sums to 100 overall, and
+  pushes the same split down to indicators. It introduces no new scoring
+  semantics, weights, or thresholds; it only re-expresses the existing
+  score as a reconciled waterfall.
+
+- Add
+  [`sci_weight_robustness()`](https://r4sub.github.io/r4subscore/reference/sci_weight_robustness.md),
+  a read-only diagnostic that auto-perturbs the pillar weights around
+  the current configuration (one-at-a-time nudges and small simplex
+  transfers) and reports the smallest weight change that flips the
+  reported decision band. It reuses
+  [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md)
+  and
+  [`classify_band()`](https://r4sub.github.io/r4subscore/reference/classify_band.md)
+  unchanged and holds the pillar scores and the critical-finding count
+  fixed, so it only measures band stability. It is a robustness
+  diagnostic, not a calibration or validation of the weights, and
+  returns a tidy result with a print method.
+
+- Add
+  [`report_markdown()`](https://r4sub.github.io/r4subscore/reference/report_markdown.md),
+  which renders the object from
+  [`sci_report()`](https://r4sub.github.io/r4subscore/reference/sci_report.md)
+  as a shareable Markdown readiness memo: the SCI and decision band, the
+  distance to target, the per-pillar breakdown, the findings worth
+  acting on, and the biggest levers, ready to paste into a pull request,
+  issue, or status note. The memo is labelled decision support, not a
+  regulatory filing document. The
+  [`sci_report()`](https://r4sub.github.io/r4subscore/reference/sci_report.md)
+  object and all scoring, band, and gate logic are unchanged.
+
 ## r4subscore 0.4.1
 
 - Complete the pkgdown reference index so the documentation site builds,

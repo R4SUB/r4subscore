@@ -64,7 +64,9 @@ sci$band  # "ready", "minor_gaps", "conditional", or "high_risk"
 | [`compute_pillar_scores()`](https://r4sub.github.io/r4subscore/reference/compute_pillar_scores.md) | Aggregate indicators into pillar scores |
 | [`compute_sci()`](https://r4sub.github.io/r4subscore/reference/compute_sci.md) | Compute SCI (0-100) and band classification |
 | [`sci_sensitivity_analysis()`](https://r4sub.github.io/r4subscore/reference/sci_sensitivity_analysis.md) | SCI under alternative weight scenarios |
+| [`sci_weight_robustness()`](https://r4sub.github.io/r4subscore/reference/sci_weight_robustness.md) | Perturb pillar weights and report the smallest shift that flips the decision band |
 | [`sci_explain()`](https://r4sub.github.io/r4subscore/reference/sci_explain.md) | Top loss contributors and pillar breakdown |
+| [`report_markdown()`](https://r4sub.github.io/r4subscore/reference/report_markdown.md) | Render an `sci_report` object as a shareable Markdown memo |
 
 ## Integration with r4subprofile
 

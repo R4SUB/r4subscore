@@ -24,6 +24,8 @@
   : Measure the Gap Between a Scored Run and a Target
 - [`sci_what_if()`](https://r4sub.github.io/r4subscore/reference/sci_what_if.md)
   : What-If Analysis for a Single Indicator
+- [`sci_scenario()`](https://r4sub.github.io/r4subscore/reference/sci_scenario.md)
+  : SCI Scenario / What-If Analyzer
 
 ## Confidence intervals
 
@@ -36,6 +38,8 @@
 
 - [`sci_report()`](https://r4sub.github.io/r4subscore/reference/sci_report.md)
   : End-to-End Submission Readiness Report
+- [`report_markdown()`](https://r4sub.github.io/r4subscore/reference/report_markdown.md)
+  : Render an SCI Report as a Markdown Readiness Memo
 - [`sci_snapshot()`](https://r4sub.github.io/r4subscore/reference/sci_snapshot.md)
   [`print(`*`<sci_snapshot>`*`)`](https://r4sub.github.io/r4subscore/reference/sci_snapshot.md)
   : Capture an SCI Snapshot
@@ -49,6 +53,8 @@
 
 - [`sci_explain()`](https://r4sub.github.io/r4subscore/reference/sci_explain.md)
   : Explain SCI Contributors
+- [`sci_decompose()`](https://r4sub.github.io/r4subscore/reference/sci_decompose.md)
+  : Exact Additive Decomposition of the SCI
 - [`sci_sensitivity_analysis()`](https://r4sub.github.io/r4subscore/reference/sci_sensitivity_analysis.md)
   : SCI Sensitivity Analysis
 - [`sci_monotone_check()`](https://r4sub.github.io/r4subscore/reference/sci_monotone_check.md)
@@ -59,6 +65,8 @@
   : Per-Indicator Contribution Breakdown
 - [`conformance_findings()`](https://r4sub.github.io/r4subscore/reference/conformance_findings.md)
   : Count Severity-Weighted Conformance Findings
+- [`sci_weight_robustness()`](https://r4sub.github.io/r4subscore/reference/sci_weight_robustness.md)
+  : Weight Robustness Diagnostic for the Decision Band
 
 ## Print Methods
 
@@ -72,3 +80,7 @@
   : Print an SCI Report
 - [`print(`*`<sci_targets>`*`)`](https://r4sub.github.io/r4subscore/reference/print.sci_targets.md)
   : Print an SCI Target
+- [`print(`*`<sci_scenario>`*`)`](https://r4sub.github.io/r4subscore/reference/print.sci_scenario.md)
+  : Print an SCI Scenario Analysis
+- [`print(`*`<sci_weight_robustness>`*`)`](https://r4sub.github.io/r4subscore/reference/print.sci_weight_robustness.md)
+  : Print a Weight Robustness Diagnostic
