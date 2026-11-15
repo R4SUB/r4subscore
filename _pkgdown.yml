@@ -35,6 +35,7 @@ reference:
       - sci_targets
       - sci_gap_to_target
       - sci_what_if
+      - sci_scenario
   - title: "Confidence intervals"
     contents:
       - sci_confidence_interval
@@ -55,6 +56,7 @@ reference:
       - sci_degradation_curve
       - indicator_contributions
       - conformance_findings
+      - sci_weight_robustness
   - title: "Print Methods"
     contents:
       - print.sci_result
@@ -62,6 +64,8 @@ reference:
       - print.sci_gap
       - print.sci_report
       - print.sci_targets
+      - print.sci_scenario
+      - print.sci_weight_robustness
 
 footer:
   structure:
